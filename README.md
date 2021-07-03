@@ -3,6 +3,9 @@
 ## front-end
 - reactjs
 - material UI
+### Chart
+- vicotory
+[link](https://formidable.com/open-source/victory/)
 
 ## back-end
 - firebase hosting
