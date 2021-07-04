@@ -1,48 +1,38 @@
 import React from "react";
 
-import { VictoryBar, VictoryChart, VictoryAxis, VictoryTheme } from "victory";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  useParams,
+  useRouteMatch,
+} from "react-router-dom";
+
+import firebase from "./../firebase";
+
+import { Chart, Table } from "./../pages";
+
+import Navbar from "./../components/NavBar";
 
 const Dashboard = () => {
+  let { path, url } = useRouteMatch();
+
+  const logout = () => {
+    firebase.auth().signOut();
+  };
   return (
-    <div className='grid  grid-cols-12 gap-4'>
-      <div className='col-span-6'>
-        <Bar />
-      </div>
-      <div className='col-span-6'>2</div>
-      <div className='col-span-6'>3</div>
+    <div>
+      <Navbar />
+      <Switch>
+        <Route exact path={`${path}/table`}>
+          <Table />
+        </Route>
+        <Route exact path={`${path}/chart`}>
+          <Chart />
+        </Route>
+      </Switch>
     </div>
-  );
-};
-
-const data = [
-  { quarter: 1, earnings: 13000 },
-  { quarter: 2, earnings: 16500 },
-  { quarter: 3, earnings: 14250 },
-  { quarter: 4, earnings: 19000 },
-];
-
-const Bar = () => {
-  return (
-    <VictoryChart
-      // domainPadding will add space to each side of VictoryBar to
-      // prevent it from overlapping the axis
-      domainPadding={20}
-      // adding the material theme provided with Victory
-      theme={VictoryTheme.material}
-    >
-      <VictoryAxis
-        // tickValues specifies both the number of ticks and where
-        // they are placed on the axis
-        tickValues={[1, 2, 3, 4]}
-        tickFormat={["Quarter 1", "Quarter 2", "Quarter 3", "Quarter 4"]}
-      />
-      <VictoryAxis
-        dependentAxis
-        // tickFormat specifies how ticks should be displayed
-        tickFormat={(x) => `$${x / 1000}k`}
-      />
-      <VictoryBar data={data} x='quarter' y='earnings' />
-    </VictoryChart>
   );
 };
 
